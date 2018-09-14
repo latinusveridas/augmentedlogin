@@ -15,10 +15,11 @@ let sample_events = [
   {
       id: "E_d8w56df5w65fd4d65f4er5das65qwe45sa5re",
       organizer: "Elon Musk",
-      sport: "Running",
+      sport: "Musculation",
       ppp: 4,
       maxp: 10,
-      location: "Los Angeles"
+      location: "Los Angeles",
+      image: "musculation"
   },
   {
       id: "E_8w6g5z8v56s98r1g5s5er47h1s5rt4gd4ef4d45er",
@@ -26,15 +27,17 @@ let sample_events = [
       sport: "Yoga",
       ppp: 10,
       maxp: 50,
-      location: "Palo Alto"
+      location: "Palo Alto",
+      image: "yoga"
   },
   {
       id: "E_p89we45e5as8w5d4fe5f45d4fef8fr564wert54err",
       organizer: "Larry Elisson",
-      sport: "Sailing",
+      sport: "Volley",
       ppp: 50,
       maxp: 4,
-      location: "Le Havre"
+      location: "Le Havre",
+      image: "volley"
   },
 
 ]
