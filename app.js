@@ -9,6 +9,40 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+///////////////
+
+let inventory = [
+  {
+      id: uuidv4(),
+      name: "Pizza Margherita",
+      description: "Features tomatoes, sliced mozzarella, basil, and extra virgin olive oil.",
+      amount: 39.99,
+      image: 'pizza1'
+  },
+  {
+      id: uuidv4(),
+      name: "Bacon cheese fry",
+      description: "Features tomatoes, bacon, cheese, basil and oil",
+      amount: 29.99,
+      image: 'pizza2'
+  }
+]
+
+const bodyParser = require('body-parser')
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended:false}))
+app.get('/orders', (req, res) => res.json(orders))
+
+
+
+
+///////////
+
+
+
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
