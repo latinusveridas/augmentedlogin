@@ -31,7 +31,7 @@ let inventory = [
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
-app.get('/orders', (req, res) => res.json(orders))
+app.get('/inventory', (req, res) => res.json(inventory))
 
 
 
