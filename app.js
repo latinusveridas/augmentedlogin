@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var mysql = require('mysql'); 
 
 var app = express();
 
@@ -47,6 +48,25 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 app.get('/currentevents', (req, res) => res.json(sample_events))
 
+
+
+
+
+var mysql = require('mysql');
+
+var con = mysql.createConnection({ 
+    host  : process.env.OPENSHIFT_MYSQL_DB_HOST, 
+    user  : process.env.OPENSHIFT_MYSQL_DB_USERNAME, 
+    password : process.env.OPENSHIFT_MYSQL_DB_PASSWORD, 
+    port  : process.env.OPENSHIFT_MYSQL_DB_PORT, 
+    database : process.env.OPENSHIFT_APP_NAME 
+}); 
+
+
+con.connect(function(err) {
+  if (err) throw err;
+  app.get('/dbtest', (req, res) => res.json({status: "success"}))
+});
 
 
 
