@@ -51,7 +51,7 @@ app.get('/currentevents', (req, res) => res.json(sample_events))
 
 
 
-
+/*
 var mysql = require('mysql');
 
 var con = mysql.createConnection({ 
@@ -68,7 +68,7 @@ con.connect(function(err) {
   app.get('/dbtest', (req, res) => res.json({status: "success"}))
 });
 
-
+*/
 
 ///////////
 
