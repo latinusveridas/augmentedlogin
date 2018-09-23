@@ -55,6 +55,19 @@ var mysqlUser = 'rootaccess'; //mysql username
 var mysqlPass = 'Miroslava326356$$$$$'; //mysql password
 var mysqlDb   = 'sampledb'; //mysql database name
 
+var mysqlString = 'mysql://'   + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + ':' + mysqlPort + '/' + mysqlDb;
+
+var mysqlClient = mysql.createConnection(mysqlString);
+mysqlClient.connect(function(err){
+  if (err) console.log(err);
+});
+
+// app is running!
+app.get('/dbstatus', function(req, res) {
+  res.send('OK');
+});
+
+
 
 
 /*
