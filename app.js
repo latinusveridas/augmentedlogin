@@ -57,6 +57,10 @@ var mysqlDb   = 'sampledb'; //mysql database name
 
 var mysqlString = 'mysql://'   + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + ':' + mysqlPort + '/' + mysqlDb;
 
+console.log('**********************************DEBUG*************************************')
+console.log(mysqlHost)
+console.log(mysqlPort)
+
 var mysqlClient = mysql.createConnection(mysqlString);
 mysqlClient.connect(function (err) {
     console.log('DEBUG: CONNECTION TO DB LOOKS FINE !!!!!!!!')
