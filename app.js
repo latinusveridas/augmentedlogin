@@ -96,7 +96,15 @@ app.get('/showtables', function (req, res) {
 
 });
 
+app.get('/createtable', function (req, res) {
+    mysqlClient.query('create table authors (id INT, name VARCHAR(30), rating INT)', function (err, results) {
+        if (err) throw err;
+        console.log(results);
+        console.log('END OF QUERY')
+        res.json(results);
+    });
 
+});
 
 
 /*
