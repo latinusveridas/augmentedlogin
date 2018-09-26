@@ -58,9 +58,10 @@ var mysqlDb   = 'sampledb'; //mysql database name
 var mysqlString = 'mysql://'   + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + ':' + mysqlPort + '/' + mysqlDb;
 
 var mysqlClient = mysql.createConnection(mysqlString);
+
 mysqlClient.connect(function (err) {
+    if (err) console.log('DEBUG ERROR: ' + err.message);
     console.log('DEBUG: CONNECTION TO DB LOOKS FINE !!!!!!!!')
-  if (err) console.log(err);
 });
 
 // app is running!
@@ -68,7 +69,19 @@ app.get('/dbstatus', function(req, res) {
   res.send('OK');
 });
 
+app.get('showdatabases', function (req, res) {
+    mysqlClient.connect(function (err) {
+        if (err) throw err;
+        console.log('CONNECTED, BEFORE QUERY')
+        mysqlClient.query('SHOW DATABASES', function (err, result, fields) {
+            if (err) throw err;
+            console.log(result);
+            console.log('END OF QUERY')
+        });
+        
+    });
 
+});
 
 
 /*
