@@ -76,6 +76,27 @@ app.get('/showdatabases', function (req, res) {
         
 });
 
+app.get('/selectdb', function (req, res) {
+    mysqlClient.query('USE sampledb', function (err, results) {
+        if (err) throw err;
+        console.log(results);
+        console.log('END OF QUERY')
+        res.json(results);
+    });
+
+});
+
+app.get('/showtables', function (req, res) {
+    mysqlClient.query('show tables', function (err, results) {
+        if (err) throw err;
+        console.log(results);
+        console.log('END OF QUERY')
+        res.json(results);
+    });
+
+});
+
+
 
 
 /*
