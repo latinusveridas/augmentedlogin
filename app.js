@@ -49,7 +49,7 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.get('/currentevents', (req, res) => res.json(sample_events))
 
 
-var mysqlHost = process.env.OPENSHIFT_MYSQL_DB_HOST || '10.130.34.251';
+var mysqlHost = process.env.OPENSHIFT_MYSQL_DB_HOST || '172.30.103.72';
 var mysqlPort = process.env.OPENSHIFT_MYSQL_DB_PORT || 3306;
 var mysqlUser = 'rootaccess'; //mysql username
 var mysqlPass = 'Miroslava326356$$$$$'; //mysql password
