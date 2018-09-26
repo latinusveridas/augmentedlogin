@@ -106,6 +106,16 @@ app.get('/createtable', function (req, res) {
 
 });
 
+app.get('/deletetable', function (req, res) {
+    mysqlClient.query('drop table authors', function (err, results) {
+        if (err) throw err;
+        console.log(results);
+        console.log('END OF QUERY')
+        res.json(results);
+    });
+
+});
+
 
 /*
 var mysql = require('mysql');
