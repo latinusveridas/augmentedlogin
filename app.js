@@ -75,7 +75,8 @@ app.get('/showdatabases', function (req, res) {
             if (err) throw err;
             console.log(results);
             console.log('END OF QUERY')
-            res.render(JSON.stringify(results))
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(results))
    
         });
         
