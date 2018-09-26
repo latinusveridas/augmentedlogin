@@ -64,11 +64,6 @@ mysqlClient.connect(function (err) {
     console.log('DEBUG: CONNECTION TO DB LOOKS FINE !!!!!!!!')
 });
 
-// app is running!
-app.get('/dbstatus', function(req, res) {
-  res.send('OK');
-});
-
 
 app.get('/showdatabases', function (req, res) {
         mysqlClient.query('SHOW DATABASES', function (err, results) {
@@ -76,7 +71,8 @@ app.get('/showdatabases', function (req, res) {
             console.log(results);
             console.log('END OF QUERY')
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(results));
+            //res.end(JSON.stringify(results));
+            res.json(results);
    
         });
         
