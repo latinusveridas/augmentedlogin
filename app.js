@@ -102,7 +102,7 @@ app.get('/createtable', function (req, res) {
         console.log(results);
         console.log('END OF QUERY')
         res.json(results);
-        res.send('Table Created');
+        res.end('<html><body><h1>Table Created !</h1></body></html>');
     });
 
 });
