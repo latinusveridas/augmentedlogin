@@ -117,6 +117,15 @@ app.get('/deletetable', function (req, res) {
 
 });
 
+app.get('/getall',function(req,res){
+    mysqlClient.query('SELECT * FROM sampleb.events_table',function (err,results){
+        if (err) throw err;
+        console.log(results);
+        res.json(results)
+    });
+
+});
+
 
 /*
 var mysql = require('mysql');
