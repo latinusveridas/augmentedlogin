@@ -70,21 +70,16 @@ app.get('/dbstatus', function(req, res) {
 });
 
 
-//app.get('showdatabases', function (req, res) {
-   /* mysqlClient.connect(function (err) {
-        if (err) throw err;
-        console.log('CONNECTED, BEFORE QUERY')*/
-
-        mysqlClient.query('SHOW DATABASES', function (err, result) {
+app.get('/showdatabases', function (req, res) {
+        mysqlClient.query('SHOW DATABASES', function (err, results) {
             if (err) throw err;
-            console.log(result);
+            console.log(results);
             console.log('END OF QUERY')
+            res.send(results)
    
         });
         
-    //});
-
-//});
+});
 
 
 
