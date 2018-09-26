@@ -82,7 +82,7 @@ app.get('/dbstatus', function(req, res) {
    
         });
         
-    });
+    //});
 
 //});
 
