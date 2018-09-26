@@ -73,11 +73,12 @@ app.get('/dbstatus', function(req, res) {
     mysqlClient.connect(function (err) {
         if (err) throw err;
         console.log('CONNECTED, BEFORE QUERY')
+
         mysqlClient.query('SHOW DATABASES', function (err, result, fields) {
             if (err) throw err;
             console.log(result);
             console.log('END OF QUERY')
-            res
+   
         });
         
     });
