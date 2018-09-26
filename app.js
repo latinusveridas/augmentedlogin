@@ -69,6 +69,7 @@ app.get('/dbstatus', function(req, res) {
   res.send('OK');
 });
 
+/*
 //app.get('showdatabases', function (req, res) {
     mysqlClient.connect(function (err) {
         if (err) throw err;
@@ -85,6 +86,7 @@ app.get('/dbstatus', function(req, res) {
 
 //});
 
+*/
 
 /*
 var mysql = require('mysql');
