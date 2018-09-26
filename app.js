@@ -75,7 +75,7 @@ app.get('/showdatabases', function (req, res) {
             if (err) throw err;
             console.log(results);
             console.log('END OF QUERY')
-            res.send(results)
+            res.render(results)
    
         });
         
