@@ -69,13 +69,13 @@ app.get('/dbstatus', function(req, res) {
   res.send('OK');
 });
 
-/*
-//app.get('showdatabases', function (req, res) {
-    mysqlClient.connect(function (err) {
-        if (err) throw err;
-        console.log('CONNECTED, BEFORE QUERY')
 
-        mysqlClient.query('SHOW DATABASES', function (err, result, fields) {
+//app.get('showdatabases', function (req, res) {
+   /* mysqlClient.connect(function (err) {
+        if (err) throw err;
+        console.log('CONNECTED, BEFORE QUERY')*/
+
+        mysqlClient.query('SHOW DATABASES', function (err, result) {
             if (err) throw err;
             console.log(result);
             console.log('END OF QUERY')
@@ -86,7 +86,7 @@ app.get('/dbstatus', function(req, res) {
 
 //});
 
-*/
+
 
 /*
 var mysql = require('mysql');
