@@ -72,7 +72,8 @@ app.get('/showdatabases', function (req, res) {
             console.log('END OF QUERY')
             res.writeHead(200, { 'Content-Type': 'application/json' });
             //res.end(JSON.stringify(results));
-            res.json(results);
+            var parsedjson = JSON.parse(results)
+            res.json(parsedjson);
    
         });
         
