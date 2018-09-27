@@ -127,6 +127,26 @@ app.get('/getall',function(req,res){
 });
 
 
+/////PART mkdir experimental
+
+var mkdirSync = require('mkdirp');
+
+app.get('/mkdir', function (req, res) {
+
+    mkdirSync('/images');
+
+});
+
+const mkdirSync = function (dirPath) {
+    try {
+        fs.mkdirSync(dirPath)
+    } catch (err) {
+        if (err.code !== 'EEXIST') throw err
+    }
+}
+
+
+
 /*
 var mysql = require('mysql');
 
