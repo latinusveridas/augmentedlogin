@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var fs = require('file-system');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mysql = require('mysql'); 
@@ -137,7 +139,7 @@ app.get('/mkdir', function (req, res) {
 
 });
 
-const mkdirSync = function (dirPath) {
+function mkdirSync(dirPath) {
     try {
         fs.mkdirSync(dirPath)
     } catch (err) {
