@@ -42,14 +42,6 @@ let sample_events = [
       location: "Le Havre",
       image: "volley"
   },
-  {
-      host: process.env.OPENSHIFT_MYSQL_DB_HOST,
-      port: process.env.OPENSHIFT_MYSQL_DB_PORT,
-      user: process.env.MYSQL_USER, //mysql username
-      pass: process.env.MYSQL_PASSWORD, //mysql password
-      db: process.env.MYSQL_DATABASE //mysql database name
-  },
-
 ]
 
 const bodyParser = require('body-parser')
@@ -67,6 +59,9 @@ var mysqlDb = process.env.MYSQL_DATABASE; //mysql database name
 var mysqlString = 'mysql://'   + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + ':' + mysqlPort + '/' + mysqlDb;
 
 var mysqlClient = mysql.createConnection(mysqlString);
+
+console.log("STANDARD DEBUG:" + process.env.OPENSHIFT_MYSQL_DB_HOST + process.env.OPENSHIFT_MYSQL_DB_PORT + process.env.MYSQL_USER + process.env.MYSQL_PASSWORD + process.env.MYSQL_DATABASE);
+
 
 mysqlClient.connect(function (err) {
     if (err) console.log('DEBUG ERROR: ' + err.message);
