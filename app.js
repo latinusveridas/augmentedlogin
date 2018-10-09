@@ -53,9 +53,9 @@ app.get('/currentevents', (req, res) => res.json(sample_events))
 
 var mysqlHost = process.env.OPENSHIFT_MYSQL_DB_HOST || '172.30.103.72';
 var mysqlPort = process.env.OPENSHIFT_MYSQL_DB_PORT || 3306;
-var mysqlUser = 'rootaccess'; //mysql username
-var mysqlPass = 'Miroslava326356$$$$$'; //mysql password
-var mysqlDb   = 'sampledb'; //mysql database name
+var mysqlUser = process.env.MYSQL_USER; //mysql username
+var mysqlPass = process.env.MYSQL_PASSWORD; //mysql password
+var mysqlDb = process.env.MYSQL_DATABASE; //mysql database name
 
 var mysqlString = 'mysql://'   + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + ':' + mysqlPort + '/' + mysqlDb;
 
