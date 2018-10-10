@@ -3,17 +3,24 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var fs = require('file-system');
+var mysql = require('mysql');
+var jwt = require('jsonwebtoken');
+var bodyParser = require('body-parser');
+
+var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var mysql = require('mysql'); 
-var jwt = require('jsonwebtoken');
+var Users = require('./Routes2/Users');
 
-var app = express();
+app.use('/users', Users);
 
-///////////////
+
+
+
 
 let sample_events = [
   {
@@ -45,9 +52,7 @@ let sample_events = [
   },
 ]
 
-const bodyParser = require('body-parser')
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:false}))
+
 app.get('/currentevents', (req, res) => res.json(sample_events))
 
 
@@ -63,47 +68,25 @@ var mysqlClient = mysql.createConnection(mysqlString);
 
 console.log("STANDARD DEBUG:" + process.env.OPENSHIFT_MYSQL_DB_HOST + process.env.OPENSHIFT_MYSQL_DB_PORT + process.env.MYSQL_USER + process.env.MYSQL_PASSWORD + process.env.MYSQL_DATABASE);
 
-
-
-
+/*
 
 //TESTING MySQL Pooling
 app.get('/pool', function (req, res) {
     console.log("ENTERING IN POOLING CALLBACK");
 
-    //DEFINING POOLING
-    var pool = mysql.createPool({
-        connectionLimit: 10,
-        host: process.env.OPENSHIFT_MYSQL_DB_HOST,
-        user: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE
-    });
     // GET CONNECTION
     pool.getConnection(function (err, conn) {
         if (err) {
             res.send("ERROR OCCURED")
         }
-        else
-        {
+        else {
             res.send("CONNECTION ESTABLISHED !!!")
             console.log("CONNECTION ESTABLISHED!!!")
             conn.release();
             console.log("CONNECTION RELEASED")
         }
     });
-});
-
-
-
-
-
-
-
-
-
-
-
+}); */
 
 
 
@@ -177,7 +160,8 @@ app.get('/showtables', function (req, res) {
 });
 
 app.get('/createtable', function (req, res) {
-    mysqlClient.query('create table users (id INT, email VARCHAR(30), password VARCHAR(30))', function (err, results) {
+    var querystring = 'CREATE TABLE `users` ( `id` int(11) NOT NULL, `first_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `last_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL, `created` datetime NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;'
+    mysqlClient.query(querystring, function (err, results) {
         if (err) throw err;
         console.log(results);
         console.log('END OF QUERY')
@@ -188,7 +172,7 @@ app.get('/createtable', function (req, res) {
 });
 
 app.get('/deletetable', function (req, res) {
-    mysqlClient.query('drop table authors', function (err, results) {
+    mysqlClient.query('drop table users', function (err, results) {
         if (err) throw err;
         console.log(results);
         console.log('END OF QUERY')
