@@ -19,7 +19,7 @@ var database = require('./Database/database');
 
 app.use('/users', Users);
 
-app.get('/showfields', function (res, req) {
+app.get('/showfields', function (req, res) {
 
     database.pool.getConnection(function (err, conn) {
         if (err) {
@@ -40,7 +40,7 @@ app.get('/showfields', function (res, req) {
 
 });
 
-app.get('/createuserdb', function (res, req) {
+app.get('/createuserdb', function (req, res) {
     console.log("entered in Create User DB !!");
     database.pool.getConnection(function (err, conn) {
         if (err) {
