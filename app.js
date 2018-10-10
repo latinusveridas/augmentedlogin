@@ -48,12 +48,13 @@ app.get('/createuserdb', function (req, res) {
             appData["data"] = "Internal Server Error";
             res.status(500).json(appData);
         } else {
-            var querystring = 'CREATE TABLE `users` ( `id` int(11) NOT NULL, `first_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `last_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL, `created` datetime NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;'
+            var querystring = "CREATE TABLE 'users' ( 'id' int(11) NOT NULL, 'first_name' varchar(100) COLLATE utf8_unicode_ci NOT NULL, 'last_name' varchar(100) COLLATE utf8_unicode_ci NOT NULL, 'email' varchar(100) COLLATE utf8_unicode_ci NOT NULL, 'password' varchar(255) COLLATE utf8_unicode_ci NOT NULL, 'created' datetime NOT NULL);"
             conn.query(querystring, function (err, rows, fields) {
                 if (!err) {
                     res.json(rows);
                 } else {
                     res.send("Problem");
+                    res.json(err);
                 }
             });
             conn.release();
@@ -201,7 +202,7 @@ app.get('/showtables', function (req, res) {
 });
 
 app.get('/createtable', function (req, res) {
-    var querystring = 'CREATE TABLE `users` ( `id` int(11) NOT NULL, `first_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `last_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL, `created` datetime NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;'
+    var querystring = "CREATE TABLE 'users' ( 'id' int(11) NOT NULL, 'first_name' varchar(100) COLLATE utf8_unicode_ci NOT NULL, 'last_name' varchar(100) COLLATE utf8_unicode_ci NOT NULL, 'email' varchar(100) COLLATE utf8_unicode_ci NOT NULL, 'password' varchar(255) COLLATE utf8_unicode_ci NOT NULL, 'created' datetime NOT NULL);"
     mysqlClient.query(querystring, function (err, results) {
         if (err) throw err;
         console.log(results);
