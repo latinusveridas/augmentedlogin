@@ -63,6 +63,46 @@ var mysqlClient = mysql.createConnection(mysqlString);
 console.log("STANDARD DEBUG:" + process.env.OPENSHIFT_MYSQL_DB_HOST + process.env.OPENSHIFT_MYSQL_DB_PORT + process.env.MYSQL_USER + process.env.MYSQL_PASSWORD + process.env.MYSQL_DATABASE);
 
 
+
+
+
+//TESTING MySQL Pooling
+app.get('/pool', function (req, res) {
+    console.log("ENTERING IN POOLING CALLBACK");
+
+    //DEFINING POOLING
+    var pool = mysql.createPool({
+        connectionLimit: 10,
+        host: process.env.OPENSHIFT_MYSQL_DB_HOST,
+        user: process.env.MYSQL_USER,
+        password: process.env.MYSQL_PASSWORD,
+        database: process.env.MYSQL_DATABASE
+    });
+    // GET CONNECTION
+    pool.getConnection(function (err, conn) {
+        if (err) {
+            res.send("ERROR OCCURED")
+        }
+        else
+        {
+            res.send("CONNECTION ESTABLISHED !!!")
+            console.log("CONNECTION ESTABLISHED!!!")
+            conn.release();
+            console.log("CONNECTION RELEASED")
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
 mysqlClient.connect(function (err) {
     if (err) console.log('DEBUG ERROR: ' + err.message);
     console.log('DEBUG: CONNECTION TO DB LOOKS FINE !!!!!!!!')
@@ -148,31 +188,6 @@ function mkdirSync(dirPath) {
         if (err.code !== 'EEXIST') throw err
     }
 }
-
-
-
-/*
-var mysql = require('mysql');
-
-var con = mysql.createConnection({ 
-    host  : process.env.OPENSHIFT_MYSQL_DB_HOST, 
-    user  : process.env.OPENSHIFT_MYSQL_DB_USERNAME, 
-    password : process.env.OPENSHIFT_MYSQL_DB_PASSWORD, 
-    port  : process.env.OPENSHIFT_MYSQL_DB_PORT, 
-    database : process.env.OPENSHIFT_APP_NAME 
-}); 
-
-
-con.connect(function(err) {
-  if (err) throw err;
-  app.get('/dbtest', (req, res) => res.json({status: "success"}))
-});
-
-*/
-
-///////////
-
-
 
 
 // view engine setup
