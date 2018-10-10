@@ -34,6 +34,29 @@ app.get('/showfields', function (res, req) {
                     res.send("Problem");
                 }
             });
+            conn.release();
+        }
+    });
+
+});
+
+app.get('/createuserdb', function (res, req) {
+    console.log("entered in Create User DB !!");
+    database.pool.getConnection(function (err, conn) {
+        if (err) {
+            appData.error = 1;
+            appData["data"] = "Internal Server Error";
+            res.status(500).json(appData);
+        } else {
+            var querystring = 'CREATE TABLE `users` ( `id` int(11) NOT NULL, `first_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `last_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL, `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL, `created` datetime NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;'
+            conn.query(querystring, function (err, rows, fields) {
+                if (!err) {
+                    res.json(rows);
+                } else {
+                    res.send("Problem");
+                }
+            });
+            conn.release();
         }
     });
 
