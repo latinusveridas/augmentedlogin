@@ -15,11 +15,29 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var Users = require('./Routes2/Users');
+var database = require('../Database/database');
 
 app.use('/users', Users);
 
+app.get('/showfields', function (res, req) {
 
+    database.pool.getConnection(function (err, conn) {
+        if (err) {
+            appData.error = 1;
+            appData["data"] = "Internal Server Error";
+            res.status(500).json(appData);
+        } else {
+            conn.query('SHOW COLUMNS FROM users', function (err, rows, fields) {
+                if (!err) {
+                    res.json(rows);
+                } else {
+                    res.send("Problem");
+                }
+            });
+        }
+    });
 
+});
 
 
 let sample_events = [
