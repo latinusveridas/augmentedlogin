@@ -153,9 +153,33 @@ app.post('/register2', function (req, res) {
 
 
 
+app.get('/deleteusers', function (req, res) {
 
+    database.pool.getConnection(function (err, conn) {
+        conn.query('drop table users', function (err, results) {
+            if (err) throw err;
+            console.log(results);
+            console.log('DELETED')
+            res.json(results);
+        });
+        conn.release();
+    });
 
+});
 
+app.get('/showalltables', function (req, res) {
+
+    database.pool.getConnection(function (err, conn) {
+        conn.query('show tables', function (err, results) {
+            if (err) throw err;
+            console.log(results);
+            console.log('END OF SHOW TABLES')
+            res.json(results);
+        });        
+        conn.release();
+    });
+
+});
 
 
 
