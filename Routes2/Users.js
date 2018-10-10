@@ -39,6 +39,7 @@ users.post('/register', function (req, res) {
                     appData["data"] = "Error occured";
                     res.status(400).json(appData);
                     res.status(400).json(err);
+                    console.log(err);
                 }
             });
             conn.release();
