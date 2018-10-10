@@ -9,6 +9,7 @@ var fs = require('file-system');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mysql = require('mysql'); 
+var 
 
 var app = express();
 
@@ -103,11 +104,46 @@ app.get('/pool', function (req, res) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 mysqlClient.connect(function (err) {
     if (err) console.log('DEBUG ERROR: ' + err.message);
     console.log('DEBUG: CONNECTION TO DB LOOKS FINE !!!!!!!!')
 });
-
 
 app.get('/showdatabases', function (req, res) {
         mysqlClient.query('SHOW DATABASES', function (err, results) {
@@ -141,7 +177,7 @@ app.get('/showtables', function (req, res) {
 });
 
 app.get('/createtable', function (req, res) {
-    mysqlClient.query('create table authors (id INT, name VARCHAR(30), rating INT)', function (err, results) {
+    mysqlClient.query('create table users (id INT, email VARCHAR(30), password VARCHAR(30))', function (err, results) {
         if (err) throw err;
         console.log(results);
         console.log('END OF QUERY')
