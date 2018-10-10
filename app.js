@@ -104,101 +104,63 @@ var mysqlUser = process.env.MYSQL_USER; //mysql username
 var mysqlPass = process.env.MYSQL_PASSWORD; //mysql password
 var mysqlDb = process.env.MYSQL_DATABASE; //mysql database name
 
+var mysqlString = 'mysql://'   + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + ':' + mysqlPort + '/' + mysqlDb;
 
-//TESTING REGISTER WITHOUT TOKEN
-app.post('/register', function (req, res) {
-    var today = new Date();
-    var appData = {
-        "error": 1,
-        "data": ""
-    };
-    var userData = {
-        "first_name": req.body.first_name,
-        "last_name": req.body.last_name,
-        "email": req.body.email,
-        "password": req.body.password,
-        "created": today
-    };
+var mysqlClient = mysql.createConnection(mysqlString);
 
-    database.pool.getConnection(function (err, conn) {
-        if (err) {
-            appData.error = 1;
-            appData["data"] = "Internal Server Error";
-            res.status(500).json(appData);
-        } else {
-            conn.query('INSERT INTO users SET ?', userData, function (err, rows, fields) {
-                if (!err) {
-                    appData.error = 0;
-                    appData["data"] = "User registered successfully !!!";
-                    res.status(201).json(appData);
-                } else {
-                    appData["data"] = "Error occured";
-                    res.status(400).json(appData);
-                    res.status(400).json(err);
-                    console.log(err);
-                }
-            });
-            conn.release();
-        }
-    });
-
-});
-
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-
-
-
-module.exports = app;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+console.log("STANDARD DEBUG:" + process.env.OPENSHIFT_MYSQL_DB_HOST + process.env.OPENSHIFT_MYSQL_DB_PORT + process.env.MYSQL_USER + process.env.MYSQL_PASSWORD + process.env.MYSQL_DATABASE);
 
 /*
+
+//TESTING MySQL Pooling
+app.get('/pool', function (req, res) {
+    console.log("ENTERING IN POOLING CALLBACK");
+
+    // GET CONNECTION
+    pool.getConnection(function (err, conn) {
+        if (err) {
+            res.send("ERROR OCCURED")
+        }
+        else {
+            res.send("CONNECTION ESTABLISHED !!!")
+            console.log("CONNECTION ESTABLISHED!!!")
+            conn.release();
+            console.log("CONNECTION RELEASED")
+        }
+    });
+}); */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -300,4 +262,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-*/
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;
