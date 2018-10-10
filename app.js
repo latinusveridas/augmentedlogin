@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var Users = require('./Routes2/Users');
-var database = require('./Database');
+var database = require('./Database/database');
 
 app.use('/users', Users);
 
