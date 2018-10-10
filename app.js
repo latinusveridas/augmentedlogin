@@ -145,6 +145,7 @@ app.post('/register', function (req, res) {
 });
 
 
+module.exports = app;
 
 
 
@@ -173,7 +174,7 @@ app.post('/register', function (req, res) {
 
 
 
-
+/*
 
 
 
@@ -293,5 +294,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+*/
 
-module.exports = app;
