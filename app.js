@@ -9,7 +9,7 @@ var fs = require('file-system');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mysql = require('mysql'); 
-var 
+var jwt = require('jsonwebtoken');
 
 var app = express();
 
