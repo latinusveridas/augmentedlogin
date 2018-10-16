@@ -59,15 +59,18 @@ users.post('/login', function (req, res) {
             appData["data"] = "Internal Server Error";
             res.status(500).json(appData);
         } else {
-            conn.query('SELECT * FROM users WHERE email = ?', [email], function (err, rows, fields) {
+            conn.query('SELECT * FROM sampledb.users WHERE email = ?', [email], function (err, rows, fields) {
                 console.log("DEBUG EMAIL" + email);
                 if (err) {
                     appData["error"] = 1;
                     appData["data"] = "Error occured";
                     res.status(400).json(appData);
                 } else {
+                    console.log("IN THE VALIDATED err, FIRST SUCCESS");
                     if (rows.length > 0) {
+                        console.log("ROW SUP A ZERO");
                         if (rows[0].password == password) {
+                            console.log("IN FULLY SUCCESS BRACES");
                             let token = jwt.sign(rows[0], process.env.SECRET_KEY, {
                                 expiresIn: 1440
                             });
