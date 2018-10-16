@@ -60,6 +60,7 @@ users.post('/login', function (req, res) {
             res.status(500).json(appData);
         } else {
             conn.query('SELECT * FROM users WHERE email = ?', [email], function (err, rows, fields) {
+                console.log("DEBUG EMAIL" + email);
                 if (err) {
                     appData["error"] = 1;
                     appData["data"] = "Error occured";
