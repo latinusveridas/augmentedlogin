@@ -127,7 +127,7 @@ app.post('/register2', function (req, res) {
     };
 
     console.log("PREDEBUG 0 " + req.body);
-    console.log("PREDEBUG 1 " + json(req.body));
+    console.log("PREDEBUG 1 " + JSON.stringify(req.body));
     console.log("PREDEBUG 2 " + userData);
 
     database.pool.getConnection(function (err, conn) {
