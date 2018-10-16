@@ -145,9 +145,9 @@ app.post('/register2', function (req, res) {
                     res.status(201).json(appData);
                 } else {
                     appData["data"] = "Error occured";
-                    res.status(400).json(appData);
+                    //res.status(400).json(appData);
                     res.status(400).json(err);
-                    res.status(400).json(userData);
+                    //res.status(400).json(userData);
                     console.log(err);
                     console.log(userData);
                 }
