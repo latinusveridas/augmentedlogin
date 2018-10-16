@@ -132,7 +132,7 @@ app.post('/register2', function (req, res) {
             appData["data"] = "Internal Server Error";
             res.status(500).json(appData);
         } else {
-            conn.query('INSERT INTO users SET ?', userData, function (err, rows, fields) {
+            conn.query("INSERT INTO users SET ?", userData, function (err, rows, fields) {
                 if (!err) {
                     appData.error = 0;
                     appData["data"] = "User registered successfully !!!";
