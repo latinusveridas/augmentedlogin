@@ -126,7 +126,7 @@ app.post('/register2', function (req, res) {
         "created": today
     };
 
-    console.log("PREDEBUG 0 " + req.body.email);
+    console.log("PREDEBUG 0 " + req.body);
     console.log("PREDEBUG 1 " + json(req.body));
     console.log("PREDEBUG 2 " + userData);
 
