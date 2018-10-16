@@ -9,7 +9,9 @@ var jwt = require('jsonwebtoken');
 var bodyParser = require('body-parser');
 
 var app = express();
+
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 var indexRouter = require('./routes/index');
@@ -128,7 +130,7 @@ app.post('/register2', function (req, res) {
 
     console.log("PREDEBUG 0 " + req.body);
     console.log("PREDEBUG 1 " + JSON.stringify(req.body));
-    console.log("PREDEBUG 2 " + userData);
+    console.log("PREDEBUG 2 " + JSON.stringify(userData));
 
     database.pool.getConnection(function (err, conn) {
         if (err) {
