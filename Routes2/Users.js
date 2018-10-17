@@ -71,7 +71,9 @@ users.post('/login', function (req, res) {
                         console.log("ROW SUP A ZERO");
                         if (rows[0].password == password) {
                             console.log("IN FULLY SUCCESS BRACES");
-                            let token = jwt.sign(rows[0], process.env.SECRET_KEY, { expiresIn: 1440 });
+                            let token = jwt.sign(rows[0], process.env.SECRET_KEY, { 
+                                expiresIn: 1440 
+                            });
                             console.log("TOKEN LINE CREATION SEEMS OK");
                             appData.error = 0;
                             appData["token"] = token;
