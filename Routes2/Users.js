@@ -73,10 +73,11 @@ users.post('/login', function (req, res) {
                             console.log("IN FULLY SUCCESS BRACES");
                             console.log("DEBUG ROW O: " + rows[0]);
                             console.log("DEBUG ROW 0 avec password: " + rows[0].password);
-                            let token = jwt.sign(rows[0].password, process.env.SECRET_KEY, { expiresIn: 1440 }, function (err, token) {
+                            let token = jwt.sign(rows[0], process.env.SECRET_KEY, { expiresIn: 1440 }, function (err, token) {
                                 if (err) {
                                     res.json(err);
                                     console.log("THINGS ARE REALLY SAD");
+                                    console.log(err);
                                 } else {
                                     console.log("WE ARE IN THE ELSE SUCESSFULLY BRACCES OLALA");
                                     res.json(token);
