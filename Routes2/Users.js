@@ -50,6 +50,10 @@ users.post('/register', function (req, res) {
 
 users.post('/login', function (req, res) {
     
+    var appData = {
+        "token": ""
+    };
+
     var email = req.body.email;
     var password = req.body.password;
 
@@ -100,7 +104,9 @@ users.post('/login', function (req, res) {
                     }
                 }
             });
+            console.log("BEFORE RELEASE");
             conn.release();
+            console.log("AFTER RELEASE")
         }
     });
 
