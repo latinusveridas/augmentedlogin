@@ -83,9 +83,10 @@ users.post('/login', function (req, res) {
 
                             var token = jwt.sign(userData, 'test', { expiresIn: '12h' });
                             console.log("AFTER TOKEN CREATION");
+                            console.log(token);
                             appData.error = 0;
                             appData["token"] = token;
-                            //res.status(200).json(appData);
+                            res.status(200).json(appData);
                         } else {
                             appData["error"] = 1;
                             appData["data"] = "PW does not match";
