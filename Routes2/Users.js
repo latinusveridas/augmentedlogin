@@ -85,7 +85,7 @@ users.post('/login', function (req, res) {
                             console.log("DEBUG ROW 0 avec password: " + rows[0].password);
                             console.log("DEBUT userDATA password : " + userData["password"]);
 
-                            var token = jwt.sign(rows[0], 'test', { expiresIn: '12h' });
+                            var token = jwt.sign(rows[0].password, 'test', { expiresIn: '12h' });
                             console.log("AFTER TOKEN CREATION");
                             console.log(token);
                             appData.error = 0;
