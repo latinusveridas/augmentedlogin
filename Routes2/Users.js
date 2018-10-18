@@ -1,16 +1,16 @@
 var express = require('express');
 var users = express.Router();
 var database = require('../Database/database');
-var cors = require('cors')
+var cors = require('cors');
 var jwt = require('jsonwebtoken');
+
 var token;
 
 users.use(cors());
 
-process.env.SECRET_KEY = "devesh";
+process.env.SECRET_KEY = 'test';
 
-users.post('/register', function(req, res) {
-
+users.post('/register', function (req, res) {
     var today = new Date();
     var appData = {
         "error": 1,
@@ -22,126 +22,106 @@ users.post('/register', function(req, res) {
         "email": req.body.email,
         "password": req.body.password,
         "created": today
-    }
+    };
 
-    database.connection.getConnection(function (err, connection) {
-        console.log("FUNCTION DATABASE STARTED !!!")
+    database.pool.getConnection(function (err, conn) {
         if (err) {
-            appData["error"] = 1;
+            appData.error = 1;
             appData["data"] = "Internal Server Error";
             res.status(500).json(appData);
         } else {
-            console.log("OK");
-            connection.query('INSERT INTO users SET ?', userData, function(err, rows, fields) {
+            conn.query('INSERT INTO users SET ?', userData, function (err, rows, fields) {
                 if (!err) {
                     appData.error = 0;
-                    appData["data"] = "User registered successfully!";
+                    appData["data"] = "User registered successfully !!!";
                     res.status(201).json(appData);
-                    console.log("PB");
                 } else {
-                    console.log("PB");
-                    appData["data"] = "Error Occured!";
+                    appData["data"] = "Error occured";
                     res.status(400).json(appData);
+                    res.status(400).json(err);
+                    console.log(err);
                 }
             });
-            connection.release();
+            conn.release();
         }
     });
+
 });
 
-users.post('/login', function(req, res) {
-
-    var appData = {};
+users.post('/login', function (req, res) {
+    
     var email = req.body.email;
     var password = req.body.password;
 
-    database.connection.getConnection(function(err, connection) {
+    var userData = {
+        "email": email,
+        "password": password
+    };
+
+    database.pool.getConnection(function (err, conn) {
         if (err) {
             appData["error"] = 1;
             appData["data"] = "Internal Server Error";
             res.status(500).json(appData);
         } else {
-            connection.query('SELECT * FROM users WHERE email = ?', [email], function(err, rows, fields) {
+            conn.query('SELECT * FROM sampledb.users WHERE email = ?', [email], function (err, rows, fields) {
+                console.log("DEBUG EMAIL" + email);
                 if (err) {
-                    appData.error = 1;
-                    appData["data"] = "Error Occured!";
+                    appData["error"] = 1;
+                    appData["data"] = "Error occured";
                     res.status(400).json(appData);
                 } else {
+                    console.log("IN THE VALIDATED err, FIRST SUCCESS");
                     if (rows.length > 0) {
+                        console.log("ROW SUP A ZERO");
                         if (rows[0].password == password) {
-                            let token = jwt.sign(rows[0], process.env.SECRET_KEY, {
-                                expiresIn: 1440
-                            });
+
+                            console.log("IN FULLY SUCCESS BRACES");
+                            console.log("DEBUG ROW O: " + rows[0]);
+                            console.log("DEBUG ROW 0 avec password: " + rows[0].password);
+                            console.log("DEBUT userDATA password : " + userData["password"]);
+
+                            let token = jwt.sign(userData["password"], process.env.SECRET_KEY, { expiresIn: 1440 }, function (err, token) {
+                                if (err) {
+                                    res.json(err);
+                                    console.log("THINGS ARE REALLY SAD");
+                                    console.log(err);
+                                } else {
+                                    console.log("WE ARE IN THE ELSE SUCESSFULLY BRACCES OLALA");
+                                    res.json(token);
+                                }
+                            }
+                            );
+                            console.log("AFTER TOKEN CREATION");
                             appData.error = 0;
                             appData["token"] = token;
-                            res.status(200).json(appData);
+                            //res.status(200).json(appData);
                         } else {
-                            appData.error = 1;
-                            appData["data"] = "Email and Password does not match";
+                            appData["error"] = 1;
+                            appData["data"] = "PW does not match";
                             res.status(204).json(appData);
                         }
-                    } else {
-                        appData.error = 1;
-                        appData["data"] = "Email does not exists!";
+                    }
+                    else {
+                        appData["error"] = 1;
+                        appData["data"] = "email does not exists";
                         res.status(204).json(appData);
                     }
                 }
             });
-            connection.release();
+            conn.release();
         }
     });
+
 });
 
-users.post('/login', function(req, res) {
-
-    var appData = {};
-    var email = req.body.email;
-    var password = req.body.password;
-
-    database.connection.getConnection(function(err, connection) {
-        if (err) {
-            appData["error"] = 1;
-            appData["data"] = "Internal Server Error";
-            res.status(500).json(appData);
-        } else {
-            connection.query('SELECT * FROM users WHERE email = ?', [email], function(err, rows, fields) {
-                if (err) {
-                    appData.error = 1;
-                    appData["data"] = "Error Occured!";
-                    res.status(400).json(appData);
-                } else {
-                    if (rows.length > 0) {
-                        if (rows[0].password == password) {
-                            token = jwt.sign(rows[0], process.env.SECRET_KEY, {
-                                expiresIn: 5000
-                            });
-                            appData.error = 0;
-                            appData["token"] = token;
-                            res.status(200).json(appData);
-                        } else {
-                            appData.error = 1;
-                            appData["data"] = "Email and Password does not match";
-                            res.status(204).json(appData);
-                        }
-                    } else {
-                        appData.error = 1;
-                        appData["data"] = "Email does not exists!";
-                        res.status(204).json(appData);
-                    }
-                }
-            });
-            connection.release();
-        }
-    });
-});
-
-users.use(function(req, res, next) {
+users.use(function (req, res, next) {
     var token = req.body.token || req.headers['token'];
     var appData = {};
     if (token) {
-        jwt.verify(token, process.env.SECRET_KEY, function(err) {
+        jwt.verify(token, process.env.SECRET_KEY, function (err) {
             if (err) {
-                appData["error"] = 1;
+                appData.error = 1;
                 appData["data"] = "Token is invalid";
                 res.status(500).json(appData);
             } else {
@@ -149,23 +129,23 @@ users.use(function(req, res, next) {
             }
         });
     } else {
-        appData["error"] = 1;
-        appData["data"] = "Please send a token";
+        appData.error = 1;
+        appData["data"] = "No token";
         res.status(403).json(appData);
     }
 });
 
-users.get('/getUsers', function(req, res) {
+users.get('/getUsers', function (req, res) {
 
     var appData = {};
 
-    database.connection.getConnection(function(err, connection) {
+    database.pool.getConnection(function (err, conn) {
         if (err) {
             appData["error"] = 1;
             appData["data"] = "Internal Server Error";
             res.status(500).json(appData);
         } else {
-            connection.query('SELECT *FROM users', function(err, rows, fields) {
+            conn.query('SELECT * FROM users', function (err, rows, field) {
                 if (!err) {
                     appData["error"] = 0;
                     appData["data"] = rows;
@@ -175,9 +155,10 @@ users.get('/getUsers', function(req, res) {
                     res.status(204).json(appData);
                 }
             });
-            connection.release();
+            conn.release();
         }
     });
+
 });
 
 module.exports = users;
