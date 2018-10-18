@@ -81,7 +81,7 @@ users.post('/login', function (req, res) {
                             console.log("DEBUG ROW 0 avec password: " + rows[0].password);
                             console.log("DEBUT userDATA password : " + userData["password"]);
 
-                            let token = jwt.sign(userData["password"], process.env.SECRET_KEY, { expiresIn: '12h' }, function (err, token) {
+                            let token = jwt.sign({ password: userData["password"]}, process.env.SECRET_KEY, { expiresIn: '12h' }, function (err, token) {
                                 if (err) {
                                     res.json(err);
                                     console.log("THINGS ARE REALLY SAD");
