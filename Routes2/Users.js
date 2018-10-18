@@ -76,15 +76,17 @@ users.post('/login', function (req, res) {
                             let token = jwt.sign(rows[0].password, process.env.SECRET_KEY, { expiresIn: 1440 }, function (err, token) {
                                 if (err) {
                                     res.json(err);
+                                    console.log("THINGS ARE REALLY SAD");
                                 } else {
+                                    console.log("WE ARE IN THE ELSE SUCESSFULLY BRACCES OLALA");
                                     res.json(token);
                                 }
                             }
                             );
-                            console.log("TOKEN LINE CREATION SEEMS OK");
+                            console.log("AFTER TOKEN CREATION");
                             appData.error = 0;
                             appData["token"] = token;
-                            res.status(200).json(appData);
+                            //res.status(200).json(appData);
                         } else {
                             appData["error"] = 1;
                             appData["data"] = "PW does not match";
