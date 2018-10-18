@@ -81,17 +81,7 @@ users.post('/login', function (req, res) {
                             console.log("DEBUG ROW 0 avec password: " + rows[0].password);
                             console.log("DEBUT userDATA password : " + userData["password"]);
 
-                            let token = jwt.sign(rows, process.env.SECRET_KEY, { expiresIn: '12h' }, function (err, token) {
-                                if (err) {
-                                    res.json(err);
-                                    console.log("THINGS ARE REALLY SAD");
-                                    console.log(err);
-                                } else {
-                                    console.log("WE ARE IN THE ELSE SUCESSFULLY BRACCES OLALA");
-                                    res.json(token);
-                                }
-                            }
-                            );
+                            var token = jwt.sign(userData, 'test', { expiresIn: '12h' });
                             console.log("AFTER TOKEN CREATION");
                             appData.error = 0;
                             appData["token"] = token;
