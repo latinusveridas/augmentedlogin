@@ -8,7 +8,7 @@ var token;
 
 users.use(cors());
 
-process.env.SECRET_KEY = "test";
+process.env.SECRET_KEY = 'test';
 
 users.post('/register', function (req, res) {
     var today = new Date();
@@ -73,7 +73,14 @@ users.post('/login', function (req, res) {
                             console.log("IN FULLY SUCCESS BRACES");
                             console.log("DEBUG ROW O: " + rows[0]);
                             console.log("DEBUG ROW 0 avec password: " + rows[0].password);
-                            let token = jwt.sign(rows[0].password, process.env.SECRET_KEY, { expiresIn: 1440 });
+                            let token = jwt.sign(rows[0].password, process.env.SECRET_KEY, { expiresIn: 1440 }, function (err, token) {
+                                if (err) {
+                                    res.json(err);
+                                } else {
+                                    res.json(token);
+                                }
+                            }
+                            );
                             console.log("TOKEN LINE CREATION SEEMS OK");
                             appData.error = 0;
                             appData["token"] = token;
