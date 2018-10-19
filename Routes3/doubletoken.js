@@ -195,7 +195,7 @@ users.post('/refresh', function (req, res) {
                         // FAIL ON THE SEARCH OF JWT2
                         result["error"] =  1;
                         result["jwt1"] = "";
-                        result["errorDescription"]: "No token JWT found in the DB";
+                        result["errorDescription"] = "No token JWT found in the DB";
                         res.status(204).json(result)
 
                     }
