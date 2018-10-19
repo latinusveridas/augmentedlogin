@@ -83,15 +83,15 @@ users.post('/login', function (req, res) {
                             var token1 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: '12h' });
                             var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 });
 
-                            console.log("JWT1 = " + token1);
-                            console.log("JWT2 = " + token2);
+                            console.log("JWT1 LONG = " + token1);
+                            console.log("JWT2 SHORT = " + token2);
 
                             appData.error = 0;
                             appData["JWT1"] = token1;
                             appData["JWT2"] = token2;
 
                             // STARTING THE QUERY TO LOAD THE JWT2 IN THE DATABASE
-                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE password = ? AND email = ?', [token2,pwreq,emailreq], function (err, rows, fields) {
+                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE password = ? AND email = ?', [token1,pwreq,emailreq], function (err, rows, fields) {
                                 if (err) {
                                     res.json(err);
                                 } else {
@@ -126,7 +126,7 @@ users.post('/login', function (req, res) {
 });
 
 users.use(function (req, res, next) {
-    var token = req.body.token || req.headers['token'];
+    var token = req.body.jwt1 || req.headers['jwt'];
     var appData = {};
     if (token) {
         jwt.verify(token, process.env.SECRET_KEY, function (err) {
