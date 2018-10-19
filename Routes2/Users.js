@@ -49,18 +49,15 @@ users.post('/register', function (req, res) {
 });
 
 users.post('/login', function (req, res) {
-    
+
     var appData = {
-        "token": ""
+        "error": "0",
+        "JWT1": "",
+        "JWT2": ""
     };
 
     var email = req.body.email;
     var password = req.body.password;
-
-    var userData = {
-        "email": email,
-        "password": password
-    };
 
     database.pool.getConnection(function (err, conn) {
         if (err) {
@@ -81,16 +78,19 @@ users.post('/login', function (req, res) {
                         if (rows[0].password == password) {
 
                             console.log("IN FULLY SUCCESS BRACES");
-                            console.log("DEBUG ROW O: " + rows[0]);
-                            console.log("DEBUG ROW 0 avec password: " + rows[0].password);
-                            console.log("DEBUT userDATA password : " + userData["password"]);
 
-                            var token = jwt.sign({"password":rows[0].password}, 'test', { expiresIn: '12h' });
-                            console.log("AFTER TOKEN CREATION");
-                            console.log(token);
+                            var token1 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: '12h' });
+                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 });
+
+                            console.log("JWT1 = " + token1);
+                            console.log("JWT2 = " + token2);
+
                             appData.error = 0;
-                            appData["token"] = token;
+                            appData["JWT1"] = token1;
+                            appData["JWT2"] = token2;
+
                             res.status(200).json(appData);
+
                         } else {
                             appData["error"] = 1;
                             appData["data"] = "PW does not match";
