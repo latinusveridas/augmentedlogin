@@ -90,10 +90,12 @@ users.post('/login', function (req, res) {
                             appData["JWT2"] = token2;
 
                             // STARTING THE QUERY TO LOAD THE JWT2 IN THE DATABASE
-                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE ? = ?', [token2,`password`,pwreq], function (err, rows, fields) {
+                            console.log("DEBUG BEFORE JWT2 LOADING IN DB / PASSWORD RECEIVED is : " + pwreq);
+                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE ? = ?', [token2,'password',pwreq], function (err, rows, fields) {
                                 if (err) {
                                     res.json(err);
                                 } else {
+                                    console.log("DEBUG OF ROWS TO CHECK THE RESULT : " + rows );
                                     console.log("QUERY LOAD JWT2 / IN SUCCESS BRACES :)");
                                     res.status(200).json(appData);
                                 }
