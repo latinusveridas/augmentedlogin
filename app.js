@@ -18,8 +18,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var Users = require('./Routes2/Users');
 var database = require('./Database/database');
+var doubletoken = require('./Routes3/doubletoken');
 
 app.use('/users', Users);
+app.use('/doubletoken', doubletoken);
 
 app.get('/showfields', function (req, res) {
 
@@ -67,33 +69,33 @@ app.get('/createuserdb', function (req, res) {
 
 
 let sample_events = [
-  {
-      id: "E_d8w56df5w65fd4d65f4er5das65qwe45sa5re",
-      organizer: "Elon Musk",
-      sport: "Musculation",
-      ppp: 4,
-      maxp: 10,
-      location: "Los Angeles",
-      image: "musculation"
-  },
-  {
-      id: "E_8w6g5z8v56s98r1g5s5er47h1s5rt4gd4ef4d45er",
-      organizer: "Steve Jobs",
-      sport: "Yoga",
-      ppp: 10,
-      maxp: 50,
-      location: "Palo Alto",
-      image: "yoga"
-  },
-  {
-      id: "E_p89we45e5as8w5d4fe5f45d4fef8fr564wert54err",
-      organizer: "Larry Elisson",
-      sport: "Volley",
-      ppp: 50,
-      maxp: 4,
-      location: "Le Havre",
-      image: "volley"
-  },
+    {
+        id: "E_d8w56df5w65fd4d65f4er5das65qwe45sa5re",
+        organizer: "Elon Musk",
+        sport: "Musculation",
+        ppp: 4,
+        maxp: 10,
+        location: "Los Angeles",
+        image: "musculation"
+    },
+    {
+        id: "E_8w6g5z8v56s98r1g5s5er47h1s5rt4gd4ef4d45er",
+        organizer: "Steve Jobs",
+        sport: "Yoga",
+        ppp: 10,
+        maxp: 50,
+        location: "Palo Alto",
+        image: "yoga"
+    },
+    {
+        id: "E_p89we45e5as8w5d4fe5f45d4fef8fr564wert54err",
+        organizer: "Larry Elisson",
+        sport: "Volley",
+        ppp: 50,
+        maxp: 4,
+        location: "Le Havre",
+        image: "volley"
+    },
 ]
 
 
@@ -106,7 +108,7 @@ var mysqlUser = process.env.MYSQL_USER; //mysql username
 var mysqlPass = process.env.MYSQL_PASSWORD; //mysql password
 var mysqlDb = process.env.MYSQL_DATABASE; //mysql database name
 
-var mysqlString = 'mysql://'   + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + ':' + mysqlPort + '/' + mysqlDb;
+var mysqlString = 'mysql://' + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + ':' + mysqlPort + '/' + mysqlDb;
 
 var mysqlClient = mysql.createConnection(mysqlString);
 
@@ -183,7 +185,7 @@ app.get('/showalltables', function (req, res) {
             console.log(results);
             console.log('END OF SHOW TABLES')
             res.json(results);
-        });        
+        });
         conn.release();
     });
 
@@ -201,34 +203,49 @@ app.get('/showalltables', function (req, res) {
 
 
 
+app.get('/addfield', function (req, res) {
+    mysqlClient.query('ALTER TABLE sampledb.users ADD COLUMN jwt2 VARCHAR(10000)', function (err, results) {
+        if (err) throw err;
+        console.log(results);
+        console.log('END OF QUERY')
+        res.json(results);
 
+    });
 
+});
 
+app.get('/showfields', function (req, res) {
+    mysqlClient.query('SHOW COLUMNS FROM mydb.mytable', function (err, results) {
+        if (err) throw err;
+        console.log(results);
+        console.log('END OF QUERY')
+        res.json(results);
 
+    });
 
-
-
-
-
+});
 
 
 
 
 
 mysqlClient.connect(function (err) {
-    if (err) console.log('DEBUG ERROR: ' + err.message);
-    console.log('DEBUG: CONNECTION TO DB LOOKS FINE !!!!!!!!')
+    if (err) {
+        console.log('DEBUG ERROR: ' + err.message);
+    } else {
+        console.log('DEBUG: CONNECTION TO DB LOOKS FINE !!!!!!!!')
+    }
 });
 
 app.get('/showdatabases', function (req, res) {
-        mysqlClient.query('SHOW DATABASES', function (err, results) {
-            if (err) throw err;
-            console.log(results);
-            console.log('END OF QUERY')
-            res.json(results);
-   
-        });
-        
+    mysqlClient.query('SHOW DATABASES', function (err, results) {
+        if (err) throw err;
+        console.log(results);
+        console.log('END OF QUERY')
+        res.json(results);
+
+    });
+
 });
 
 app.get('/selectdb', function (req, res) {
@@ -273,8 +290,8 @@ app.get('/deletetable', function (req, res) {
 
 });
 
-app.get('/getall',function(req,res){
-    mysqlClient.query('SELECT * FROM events_table',function (err,results) {
+app.get('/getall', function (req, res) {
+    mysqlClient.query('SELECT * FROM events_table', function (err, results) {
         if (err) throw err;
         console.log(results);
         res.json(results)
@@ -316,19 +333,19 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use(function (req, res, next) {
+    next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 module.exports = app;
