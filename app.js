@@ -198,7 +198,7 @@ app.get('/showalltables', function (req, res) {
 
 
 
-
+// ==================== FOR PURE DEBUGGING ================================
 
 
 
@@ -224,8 +224,6 @@ app.get('/showfields', function (req, res) {
     });
 
 });
-
-
 
 
 
@@ -291,7 +289,7 @@ app.get('/deletetable', function (req, res) {
 });
 
 app.get('/getall', function (req, res) {
-    mysqlClient.query('SELECT * FROM events_table', function (err, results) {
+    mysqlClient.query('SELECT * FROM users', function (err, results) {
         if (err) throw err;
         console.log(results);
         res.json(results)
