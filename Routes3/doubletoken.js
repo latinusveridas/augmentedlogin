@@ -53,6 +53,7 @@ users.post('/login', function (req, res) {
 
     var appData = {
         "error": "0",
+        "errorDescription": "",
         "JWT1": "",
         "JWT2": ""
     };
@@ -95,8 +96,8 @@ users.post('/login', function (req, res) {
                                 if (err) {
                                     res.json(err);
                                 } else {
-                                    console.log("DEBUG OF ROWS TO CHECK THE RESULT : " + json(rows) );
                                     console.log("QUERY LOAD JWT2 / IN SUCCESS BRACES :)");
+                                    appData["errorDescription"] = rows;
                                     res.status(200).json(appData);
                                 }
                             });
