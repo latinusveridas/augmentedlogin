@@ -92,7 +92,8 @@ users.post('/login', function (req, res) {
 
                             // STARTING THE QUERY TO LOAD THE JWT2 IN THE DATABASE
                             console.log("DEBUG BEFORE JWT2 LOADING IN DB / PASSWORD RECEIVED is : " + pwreq);
-                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE ? = ?', [token2,"password",pwreq], function (err, rows, fields) {
+
+                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE password = ?', [token2,pwreq], function (err, rows, fields) {
                                 if (err) {
                                     res.json(err);
                                 } else {
