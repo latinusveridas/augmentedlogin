@@ -21,7 +21,8 @@ users.post('/register', function (req, res) {
         "last_name": req.body.last_name,
         "email": req.body.email,
         "password": req.body.password,
-        "created": today
+        "created": today,
+        "jwt2": ""
     };
 
     database.pool.getConnection(function (err, conn) {
@@ -66,18 +67,17 @@ users.post('/login', function (req, res) {
             res.status(500).json(appData);
         } else {
             conn.query('SELECT * FROM sampledb.users WHERE email = ?', [email], function (err, rows, fields) {
-                console.log("DEBUG EMAIL" + email);
+                console.log("DEBUG EMAIL RECEIVED FROM THE CLIENT : " + email);
                 if (err) {
                     appData["error"] = 1;
                     appData["data"] = "Error occured";
                     res.status(400).json(appData);
                 } else {
-                    console.log("IN THE VALIDATED err, FIRST SUCCESS");
                     if (rows.length > 0) {
-                        console.log("ROW SUP A ZERO");
+                        console.log("ONE EMAIL ADRESS FOUND IN THE DB AND PASSWORD WILL BE TESTED NOW");
                         if (rows[0].password == password) {
 
-                            console.log("IN FULLY SUCCESS BRACES");
+                            console.log("PASSWORD MATCHING ! :)");
 
                             var token1 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: '12h' });
                             var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 });
@@ -89,7 +89,17 @@ users.post('/login', function (req, res) {
                             appData["JWT1"] = token1;
                             appData["JWT2"] = token2;
 
-                            res.status(200).json(appData);
+                            // STARTING THE QUERY TO LOAD THE JWT2 IN THE DATABASE
+                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE ? = ', [token2,password,password], function (err, rows, fields) {
+                                if (err) {
+                                    res.json(err);
+                                } else {
+                                    console.log("QUERY LOAD JWT2 / IN SUCCESS BRACES :)");
+                                    res.status(200).json(appData);
+                                }
+                            });
+
+                            
 
                         } else {
                             appData["error"] = 1;
@@ -103,10 +113,11 @@ users.post('/login', function (req, res) {
                         res.status(204).json(appData);
                     }
                 }
-            });
-            console.log("BEFORE RELEASE");
+            }); //END OF QUERY SELECT EMAIL TO FIND THE USER
+
+
             conn.release();
-            console.log("AFTER RELEASE")
+
         }
     });
 
