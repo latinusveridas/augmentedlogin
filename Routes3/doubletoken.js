@@ -90,7 +90,7 @@ users.post('/login', function (req, res) {
                             appData["JWT2"] = token2;
 
                             // STARTING THE QUERY TO LOAD THE JWT2 IN THE DATABASE
-                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE ? = ?', [token2,password,pwreq], function (err, rows, fields) {
+                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE ? = ?', [token2,`password`,pwreq], function (err, rows, fields) {
                                 if (err) {
                                     res.json(err);
                                 } else {
