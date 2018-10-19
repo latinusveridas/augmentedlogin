@@ -58,7 +58,7 @@ users.post('/login', function (req, res) {
         "JWT2": ""
     };
 
-    var email = req.body.email;
+    var emailreq = req.body.email;
     var pwreq = req.body.password;
 
     database.pool.getConnection(function (err, conn) {
@@ -67,8 +67,8 @@ users.post('/login', function (req, res) {
             appData["data"] = "Internal Server Error";
             res.status(500).json(appData);
         } else {
-            conn.query('SELECT * FROM sampledb.users WHERE email = ?', [email], function (err, rows, fields) {
-                console.log("DEBUG EMAIL RECEIVED FROM THE CLIENT : " + email);
+            conn.query('SELECT * FROM sampledb.users WHERE email = ?', [emailreq], function (err, rows, fields) {
+                console.log("DEBUG EMAIL RECEIVED FROM THE CLIENT : " + emailreq);
                 if (err) {
                     appData["error"] = 1;
                     appData["data"] = "Error occured";
@@ -91,9 +91,7 @@ users.post('/login', function (req, res) {
                             appData["JWT2"] = token2;
 
                             // STARTING THE QUERY TO LOAD THE JWT2 IN THE DATABASE
-                            console.log("DEBUG BEFORE JWT2 LOADING IN DB / PASSWORD RECEIVED is : " + pwreq);
-
-                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE password = ?', [token2,pwreq], function (err, rows, fields) {
+                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE password = ? AND email = ?', [token2,pwreq,emailreq], function (err, rows, fields) {
                                 if (err) {
                                     res.json(err);
                                 } else {
