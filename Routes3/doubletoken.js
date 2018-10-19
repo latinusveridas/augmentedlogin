@@ -58,7 +58,7 @@ users.post('/login', function (req, res) {
     };
 
     var email = req.body.email;
-    var password = req.body.password;
+    var pwreq = req.body.password;
 
     database.pool.getConnection(function (err, conn) {
         if (err) {
@@ -75,7 +75,7 @@ users.post('/login', function (req, res) {
                 } else {
                     if (rows.length > 0) {
                         console.log("ONE EMAIL ADRESS FOUND IN THE DB AND PASSWORD WILL BE TESTED NOW");
-                        if (rows[0].password == password) {
+                        if (rows[0].password == pwreq) {
 
                             console.log("PASSWORD MATCHING ! :)");
 
@@ -90,7 +90,7 @@ users.post('/login', function (req, res) {
                             appData["JWT2"] = token2;
 
                             // STARTING THE QUERY TO LOAD THE JWT2 IN THE DATABASE
-                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE ? = ?', [token2,password,password], function (err, rows, fields) {
+                            conn.query('UPDATE sampledb.users SET jwt2 = ? WHERE ? = ?', [token2,password,pwreq], function (err, rows, fields) {
                                 if (err) {
                                     res.json(err);
                                 } else {
