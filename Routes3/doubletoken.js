@@ -80,8 +80,8 @@ users.post('/login', function (req, res) {
 
                             console.log("PASSWORD MATCHING ! :)");
 
-                            var token1 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: '12h' });
-                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 });
+                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 }); //SHORT
+                            var token1 = jwt.sign(token2, 'test', { expiresIn: '12h' }); //LONG
 
                             console.log("JWT1 LONG = " + token1);
                             console.log("JWT2 SHORT = " + token2);
@@ -95,7 +95,7 @@ users.post('/login', function (req, res) {
                                 if (err) {
                                     res.json(err);
                                 } else {
-                                    console.log("QUERY LOAD JWT2 / IN SUCCESS BRACES :)");
+                                    console.log("QUERY LOAD JWT1 / IN SUCCESS BRACES :)");
                                     appData["errorDescription"] = rows;
                                     res.status(200).json(appData);
                                 }
