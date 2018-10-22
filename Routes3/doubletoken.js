@@ -82,8 +82,20 @@ users.post('/login', function (req, res) {
                             console.log("PASSWORD MATCHING ! :)");
 
                             //CREATION TOKEN2 = SHORT TOKEN USED FOR THE CONNECTION
-                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: '1m' }); //SHORT
+                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: '1h' }); //SHORT
                             console.log("token2 short generated correctly");
+
+                            //!!!!!!!!!!!!!!!!!!!!!ADHOC DEBUGGING
+                            jwt.verify(token2, process.env.SECRET_KEY, function (err) {
+                                if (err) {
+                                    console.log("token2 verification is NOT GOOD");
+                                } else {
+                                    console.log("token2 SUCESSFULLY CHECKED !!!")
+                                }
+                            });
+                            //!!!!!!!!!!!!!!!!!!!!!ADHOC DEBUGGING
+
+
 
 
 
@@ -91,6 +103,16 @@ users.post('/login', function (req, res) {
                             var salt = { "password": rows[0].password + "salt" }; //SALT ADDED TO DIFFERENTIATE THE TOKEN 1 OF THE TOKEN 2
                             var token1 = jwt.sign(salt, 'test', { expiresIn: '12h' }); //LONG
                             console.log("Token1 long generated correctly");
+
+                            //!!!!!!!!!!!!!!!!!!!!!ADHOC DEBUGGING
+                            jwt.verify(token1, process.env.SECRET_KEY, function (err) {
+                                if (err) {
+                                    console.log("token1 verification is NOT GOOD");
+                                } else {
+                                    console.log("token1 SUCESSFULLY CHECKED !!!")
+                                }
+                            });
+                            //!!!!!!!!!!!!!!!!!!!!!ADHOC DEBUGGING
 
                             console.log("JWT1 LONG = " + token1);
                             console.log("JWT2 SHORT = " + token2);
