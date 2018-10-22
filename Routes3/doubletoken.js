@@ -49,6 +49,7 @@ users.post('/register', function (req, res) {
 
 });
 
+// ======================================LOGIN WILL GENERATE TOKEN 1 & TOKEN 2 ==============================================================
 users.post('/login', function (req, res) {
 
     var appData = {
@@ -80,8 +81,12 @@ users.post('/login', function (req, res) {
 
                             console.log("PASSWORD MATCHING ! :)");
 
+                            //CREATION TOKEN2 = SHORT TOKEN USED FOR THE CONNECTION
                             var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 }); //SHORT
-                            var token1 = jwt.sign(token2, 'test', { expiresIn: '12h' }); //LONG
+
+                            // CREATION OF TOKEN1 = LONG TOKEN USED FOR THE CONNECTION
+                            var salt = rows[0].password + "salt"; //SALT ADDED TO DIFFERENTIATE THE TOKEN 1 OF THE TOKEN 2
+                            var token1 = jwt.sign(salt, 'test', { expiresIn: '12h' }); //LONG
 
                             console.log("JWT1 LONG = " + token1);
                             console.log("JWT2 SHORT = " + token2);
@@ -125,8 +130,76 @@ users.post('/login', function (req, res) {
 
 });
 
+
+
+// ============================REFRESH THE JWT 2 THROUGH THE JWT 1 POSTED AND COMPARED TO THOSE STORED IN THE DATABASE============================================================
+users.post('/refresh', function (req, res) {
+
+    //==========DATABASE INFORMATION=============
+    //      jwt1 field name is : jwt1
+
+    // COLLECT THE JWT2
+    var JWT1 = req.body.token1 || req.headers['jwt1'];
+
+    // PREPARE THE RESULT
+    var result = {
+        "error": 0,
+        "errorDescription": "",
+        "jwt1": ""
+    };
+
+    // GO IN THE DATABASE
+    database.pool.getConnection(function (err, conn) {
+        if (err) {
+            res.status(500).json(err);
+        } else {
+            // LAUNCH THE QUERY
+            conn.query('SELECT * FROM sampledb.users WHERE jwt1 = ?', [JWT1], function (err, rows, field) {
+                if (err) {
+                    // ERROR ON QUERY
+                    res.status(400).json(err);
+                } else {
+                    // SUCCESS ON QUERY
+                    if (rows[0].jwt1 == JWT1) {
+                        //SUCCESS ON THE SEARCH OF THE TOKEN JWT1
+                        //CREATION OF token2 (SHORT)
+                        var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 });
+                        result["jwt2"] = token2;
+                        res.status(200).json(result);
+                    } else {
+                        // FAIL ON THE SEARCH OF JWT2
+                        result["error"] = 1;
+                        result["jwt2"] = "";
+                        result["errorDescription"] = "No token JWT found in the DB";
+                        res.status(204).json(result)
+
+                    }
+
+                }
+
+            });
+
+            conn.release();
+
+        }
+
+
+    });
+
+});
+
+
+///////////////////////////////////////////////////////////////////////// PROTECTED AREA//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// =============================================CHECKPOINT USED TO CHECK THE TOKEN 2 TO OBTAIN ACCESS TO PROTECTED AREAS =======================================================
 users.use(function (req, res, next) {
-    var token = req.body.jwt1 || req.headers['jwt1'];
+    var token = req.body.jwt2 || req.headers['jwt2'];
     var appData = {};
     if (token) {
         jwt.verify(token, process.env.SECRET_KEY, function (err) {
@@ -144,6 +217,8 @@ users.use(function (req, res, next) {
         res.status(403).json(appData);
     }
 });
+
+
 
 users.get('/getUsers', function (req, res) {
 
@@ -171,59 +246,6 @@ users.get('/getUsers', function (req, res) {
 
 });
 
-// ============================REFRESH THE JWT 1 THROUGH HE JWT 2 POSTED AND COMPARED TO THOSE STORED IN THE DATABASE============================================================
-users.post('/refresh', function (req, res) {
 
-    //==========DATABASE INFORMATION=============
-    //      jwt2 field name is : jwt2
-
-    // COLLECT THE JWT2
-    var JWT2 = req.body.token2 || req.headers['token2'];
-
-    // PREPARE THE RESULT
-    var result = {
-        "error": 0,
-        "errorDescription" : "",
-        "jwt1": ""
-    };
-
-    // GO IN THE DATABASE
-    database.pool.getConnection(function (err, conn) {
-        if (err) {
-            res.status(500).json(err);
-        } else {
-            // LAUNCH THE QUERY
-            conn.query('SELECT * FROM sampledb.users WHERE jwt2 = ?', [JWT2], function (err, rows, field) {
-                if (err) {
-                    // ERROR ON QUERY
-                    res.status(400).json(err);
-                } else {
-                    // SUCCESS ON QUERY
-                    if (rows[0].jwt2 == JWT2) {
-                        //SUCCESS ON THE SEARCH OF THE TOKEN JWT2
-                        var token1 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 });
-                        result["jwt1"] = token1;
-                        res.status(200).json(result);
-                    } else {
-                        // FAIL ON THE SEARCH OF JWT2
-                        result["error"] =  1;
-                        result["jwt1"] = "";
-                        result["errorDescription"] = "No token JWT found in the DB";
-                        res.status(204).json(result)
-
-                    }
-
-                }
-
-            });
-
-            conn.release();
-
-        }
-
-
-    });
-
-});
 
 module.exports = users;
