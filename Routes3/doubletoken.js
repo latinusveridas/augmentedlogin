@@ -82,8 +82,10 @@ users.post('/login', function (req, res) {
                             console.log("PASSWORD MATCHING ! :)");
 
                             //CREATION TOKEN2 = SHORT TOKEN USED FOR THE CONNECTION
-                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 }); //SHORT
+                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: '1m' }); //SHORT
                             console.log("token2 short generated correctly");
+
+
 
                             // CREATION OF TOKEN1 = LONG TOKEN USED FOR THE CONNECTION
                             var salt = { "password": rows[0].password + "salt" }; //SALT ADDED TO DIFFERENTIATE THE TOKEN 1 OF THE TOKEN 2
