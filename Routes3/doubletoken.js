@@ -82,7 +82,7 @@ users.post('/login', function (req, res) {
                             console.log("PASSWORD MATCHING ! :)");
 
                             //CREATION TOKEN2 = SHORT TOKEN USED FOR THE CONNECTION
-                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 2*60000 }); //SHORT //BASIC VALUE IN MS SO 1min = 60 000 AND 2MIN = 2*60 000
+                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: "120000" }); //SHORT //BASIC VALUE IN MS SO 1min = 60 000 AND 2MIN = 2*60 000
                             console.log("token2 short generated correctly");
 
                             // CREATION OF TOKEN1 = LONG TOKEN USED FOR THE CONNECTION
@@ -165,7 +165,7 @@ users.post('/refresh', function (req, res) {
                     if (rows[0].jwt1 == JWT1) {
                         //SUCCESS ON THE SEARCH OF THE TOKEN JWT1
                         //CREATION OF token2 (SHORT)
-                        var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 2 * 60000 });
+                        var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: "120000" });
                         result["jwt2"] = token2;
                         res.status(200).json(result);
                     } else {
