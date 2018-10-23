@@ -82,37 +82,13 @@ users.post('/login', function (req, res) {
                             console.log("PASSWORD MATCHING ! :)");
 
                             //CREATION TOKEN2 = SHORT TOKEN USED FOR THE CONNECTION
-                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: '1h' }); //SHORT
+                            var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 2*60000 }); //SHORT //BASIC VALUE IN MS SO 1min = 60 000 AND 2MIN = 2*60 000
                             console.log("token2 short generated correctly");
-
-                            //!!!!!!!!!!!!!!!!!!!!!ADHOC DEBUGGING
-                            jwt.verify(token2, process.env.SECRET_KEY, function (err) {
-                                if (err) {
-                                    console.log("token2 verification is NOT GOOD");
-                                } else {
-                                    console.log("token2 SUCESSFULLY CHECKED !!!")
-                                }
-                            });
-                            //!!!!!!!!!!!!!!!!!!!!!ADHOC DEBUGGING
-
-
-
-
 
                             // CREATION OF TOKEN1 = LONG TOKEN USED FOR THE CONNECTION
                             var salt = { "password": rows[0].password + "salt" }; //SALT ADDED TO DIFFERENTIATE THE TOKEN 1 OF THE TOKEN 2
                             var token1 = jwt.sign(salt, 'test', { expiresIn: '12h' }); //LONG
                             console.log("Token1 long generated correctly");
-
-                            //!!!!!!!!!!!!!!!!!!!!!ADHOC DEBUGGING
-                            jwt.verify(token1, process.env.SECRET_KEY, function (err) {
-                                if (err) {
-                                    console.log("token1 verification is NOT GOOD");
-                                } else {
-                                    console.log("token1 SUCESSFULLY CHECKED !!!")
-                                }
-                            });
-                            //!!!!!!!!!!!!!!!!!!!!!ADHOC DEBUGGING
 
                             console.log("JWT1 LONG = " + token1);
                             console.log("JWT2 SHORT = " + token2);
@@ -189,7 +165,7 @@ users.post('/refresh', function (req, res) {
                     if (rows[0].jwt1 == JWT1) {
                         //SUCCESS ON THE SEARCH OF THE TOKEN JWT1
                         //CREATION OF token2 (SHORT)
-                        var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 1 });
+                        var token2 = jwt.sign({ "password": rows[0].password }, 'test', { expiresIn: 2 * 60000 });
                         result["jwt2"] = token2;
                         res.status(200).json(result);
                     } else {
