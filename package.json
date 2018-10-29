@@ -19,7 +19,8 @@
     "mkdirp": "0.5.1",
     "file-system": "2.2.2",
     "jsonwebtoken": "8.3.0",
-    "cors": "2.8.4"
+    "cors": "2.8.4",
+    "nodeadmin": "0.1.2"
      
   }
 }

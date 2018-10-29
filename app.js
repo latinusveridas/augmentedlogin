@@ -7,6 +7,7 @@ var fs = require('file-system');
 var mysql = require('mysql');
 var jwt = require('jsonwebtoken');
 var bodyParser = require("body-parser");
+var nodeadmin = require("nodeadmin");
 
 var app = express();
 
@@ -22,6 +23,7 @@ var doubletoken = require('./Routes3/doubletoken');
 
 app.use('/users', Users);
 app.use('/doubletoken', doubletoken);
+app.use(nodeadmin(app));
 
 app.get('/showfields', function (req, res) {
 
