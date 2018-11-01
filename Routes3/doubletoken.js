@@ -35,6 +35,7 @@ users.post('/register', function (req, res) {
                 if (!err) {
                     appData.error = 0;
                     appData["data"] = "User registered successfully !!!";
+                    console.log("REAL TIME INFORMATION : NEW USER SUCCESSFULLY REGISTERED !!");
                     res.status(201).json(appData);
                 } else {
                     appData["data"] = "Error occured";
@@ -148,6 +149,8 @@ users.post('/refresh', function (req, res) {
         "errorDescription": "",
         "jwt1": ""
     };
+
+    console.log("REAL TIME INFO : ", JWT1)
 
     // GO IN THE DATABASE
     database.pool.getConnection(function (err, conn) {
