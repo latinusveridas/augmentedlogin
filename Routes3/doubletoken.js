@@ -22,7 +22,7 @@ users.post('/register', function (req, res) {
         "email": req.body.email,
         "password": req.body.password,
         "created": today,
-        "jwt2": ""
+        "jwt1": ""
     };
 
     database.pool.getConnection(function (err, conn) {
