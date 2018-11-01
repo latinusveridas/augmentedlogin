@@ -7,7 +7,6 @@ var fs = require('file-system');
 var mysql = require('mysql');
 var jwt = require('jsonwebtoken');
 var bodyParser = require("body-parser");
-var nodeadmin = require("nodeadmin");
 var http = require('http');
 
 var app = express();
@@ -18,11 +17,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var Users = require('./Routes2/Users');
 var database = require('./Database/database');
 var doubletoken = require('./Routes3/doubletoken');
 
-app.use('/users', Users);
+
 app.use('/doubletoken', doubletoken);
 app.use(nodeadmin(app));
 
