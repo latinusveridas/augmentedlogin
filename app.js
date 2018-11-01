@@ -121,7 +121,7 @@ var mysqlString = 'mysql://' + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + '
 
 var mysqlClient = mysql.createConnection(mysqlString);
 
-console.log("STANDARD DEBUG:" + process.env.OPENSHIFT_MYSQL_DB_HOST + process.env.OPENSHIFT_MYSQL_DB_PORT + process.env.MYSQL_USER + process.env.MYSQL_PASSWORD + process.env.MYSQL_DATABASE);
+console.log("STANDARD DEBUG:", mysqlHost,  mysqlPort,  mysqlUser,  mysqlPass,  mysqlDb);
 
 
 
