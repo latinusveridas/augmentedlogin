@@ -111,7 +111,7 @@ let sample_events = [
 app.get('/currentevents', (req, res) => res.json(sample_events))
 
 
-var mysqlHost = "83.217.132.102";
+var mysqlHost = "localhost";
 var mysqlPort = 4000;
 var mysqlUser = "root"; //mysql username
 var mysqlPass = "Miroslava326356$$$$$"; //mysql password
