@@ -8,6 +8,7 @@ var mysql = require('mysql');
 var jwt = require('jsonwebtoken');
 var bodyParser = require("body-parser");
 var nodeadmin = require("nodeadmin");
+var http = require('http');
 
 var app = express();
 
