@@ -22,7 +22,6 @@ var doubletoken = require('./Routes3/doubletoken');
 
 
 app.use('/doubletoken', doubletoken);
-app.use(nodeadmin(app));
 
 
 var port = 3000 || 3000;
