@@ -25,6 +25,12 @@ app.use('/users', Users);
 app.use('/doubletoken', doubletoken);
 app.use(nodeadmin(app));
 
+
+var port = 3000 || 3000;
+app.set('port', port);
+var server = http.createServer(app);
+
+
 app.get('/showfields', function (req, res) {
 
     database.pool.getConnection(function (err, conn) {
@@ -104,11 +110,11 @@ let sample_events = [
 app.get('/currentevents', (req, res) => res.json(sample_events))
 
 
-var mysqlHost = process.env.OPENSHIFT_MYSQL_DB_HOST;
-var mysqlPort = process.env.OPENSHIFT_MYSQL_DB_PORT;
-var mysqlUser = process.env.MYSQL_USER; //mysql username
-var mysqlPass = process.env.MYSQL_PASSWORD; //mysql password
-var mysqlDb = process.env.MYSQL_DATABASE; //mysql database name
+var mysqlHost = "83.217.132.102";
+var mysqlPort = 4000;
+var mysqlUser = "root"; //mysql username
+var mysqlPass = "Miroslava326356$$$$$"; //mysql password
+var mysqlDb = "sampledb"; //mysql database name
 
 var mysqlString = 'mysql://' + mysqlUser + ':' + mysqlPass + '@' + mysqlHost + ':' + mysqlPort + '/' + mysqlDb;
 
@@ -349,3 +355,9 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+
+
+
+
+// ========LAUNCHING SERVER========
+server.listen(port);
