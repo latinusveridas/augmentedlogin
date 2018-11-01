@@ -15,8 +15,6 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var database = require('./Database/database');
 var doubletoken = require('./Routes3/doubletoken');
 
@@ -303,24 +301,6 @@ app.get('/getall', function (req, res) {
 
 });
 
-
-/////PART mkdir experimental
-
-var mkdirSync = require('mkdirp');
-
-app.get('/mkdir', function (req, res) {
-
-    mkdirSync('/images');
-
-});
-
-function mkdirSync(dirPath) {
-    try {
-        fs.mkdirSync(dirPath)
-    } catch (err) {
-        if (err.code !== 'EEXIST') throw err
-    }
-}
 
 
 // view engine setup
