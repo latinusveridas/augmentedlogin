@@ -334,7 +334,7 @@ app.use(function (err, req, res, next) {
 module.exports = app;
 
 
-
+app.get('/', (req, res) => res.send('Hello World!'))
 
 // ========LAUNCHING SERVER========
-server.listen(port);
+app.listen(port);
