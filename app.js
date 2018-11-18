@@ -15,8 +15,6 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var database = require('./Database/database');
 var doubletoken = require('./Routes3/doubletoken');
 
@@ -303,25 +301,7 @@ app.get('/getall', function (req, res) {
 
 });
 
-
-/////PART mkdir experimental
-
-var mkdirSync = require('mkdirp');
-
-app.get('/mkdir', function (req, res) {
-
-    mkdirSync('/images');
-
-});
-
-function mkdirSync(dirPath) {
-    try {
-        fs.mkdirSync(dirPath)
-    } catch (err) {
-        if (err.code !== 'EEXIST') throw err
-    }
-}
-
+/*
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -332,9 +312,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -352,10 +329,12 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
+*/
+
 module.exports = app;
 
 
-
+app.get('/', (req, res) => res.send('Hello World!'))
 
 // ========LAUNCHING SERVER========
-server.listen(port);
+app.listen(port);
